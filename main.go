@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"sort"
 )
 
 func main() {
@@ -25,14 +26,23 @@ func main() {
 
 	pr := DivideAmong(650, SumTotals(constits))
 	PrintResult("Total Sum", pr)
+
+	tomb := Tombola(constits)
+	PrintResult("Tombola", tomb)
 }
 
 func PrintResult(title string, seats map[string]int) {
 	sum := 0
 	fmt.Println(title)
+
+	sorter := []ptmod{}
 	for k, v := range seats {
+		sorter = append(sorter, ptmod{m: v, p: k})
 		sum += v
-		fmt.Println("\t", k, ":", v)
+	}
+	sort.Sort(modc(sorter))
+	for _, v := range sorter {
+		fmt.Println("\t", v.p, ":", v.m)
 	}
 	fmt.Println("Total:", sum)
 }
@@ -43,6 +53,16 @@ func SumTotals(cc []Constit) map[string]int {
 		for kk, vv := range v.votes {
 			res[kk] += vv
 		}
+	}
+	return res
+}
+
+func Tombola(cc []Constit) map[string]int {
+	res := make(map[string]int)
+	for _, v := range cc {
+		balls := v.GetBalls(3, 100)
+		winner := SelectBall(balls)
+		res[winner]++
 	}
 	return res
 }

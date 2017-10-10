@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"strconv"
 )
@@ -26,6 +27,40 @@ var crapF map[string]int = map[string]int{
 type Constit struct {
 	name  string
 	votes map[string]int
+}
+
+func (c Constit) GetBalls(min, max int) map[string]int {
+	sum := 0
+	for _, v := range c.votes {
+		sum += v
+	}
+	res := make(map[string]int)
+
+	if sum == 0 {
+		res[""] = 1
+		return res
+	}
+
+	for k, v := range c.votes {
+		balls := (v * max) / sum
+		if balls < min {
+			continue
+		}
+		res[k] += balls
+	}
+	return res
+}
+
+func SelectBall(mp map[string]int) string {
+	ar := []string{}
+	for k, v := range mp {
+		for i := 0; i < v; i++ {
+			ar = append(ar, k)
+		}
+	}
+	n := rand.Intn(len(ar))
+	return ar[n]
+
 }
 
 func (c Constit) FptpWinner() (string, int) {

@@ -10,7 +10,7 @@ type ptmod struct {
 type modc []ptmod
 
 func (m modc) Len() int           { return len(m) }
-func (m modc) Less(a, b int) bool { return m[a].m < m[b].m }
+func (m modc) Less(a, b int) bool { return m[a].m > m[b].m } //Sorts descending
 func (m modc) Swap(a, b int)      { m[a], m[b] = m[b], m[a] }
 
 func DivideAmong(n int, mp map[string]int) map[string]int {
@@ -31,7 +31,6 @@ func DivideAmong(n int, mp map[string]int) map[string]int {
 	//Leftovers
 
 	sort.Sort(modc(mods))
-	sort.Reverse(modc(mods))
 
 	for k, v := range mods {
 		if tot+k >= n {
@@ -39,7 +38,5 @@ func DivideAmong(n int, mp map[string]int) map[string]int {
 		}
 		res[v.p] += 1
 	}
-
 	return res
-
 }
