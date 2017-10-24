@@ -22,13 +22,27 @@ func main() {
 		seats[w] += 1
 	}
 
-	PrintResult("FPTP", seats)
+	stots := SumTotals(constits)
 
-	pr := DivideAmong(650, SumTotals(constits))
+	pr := DivideAmong(650, stots)
 	PrintResult("Total Sum", pr)
 
+	PrintResult("FPTP", seats)
+	fmt.Println("SCORE: ", Compare(pr, seats))
+
 	tomb := Tombola(constits)
+	bscore := Compare(pr, tomb)
+	for i := 0; i < 1000; i++ {
+		t2 := Tombola(constits)
+		sc2 := Compare(pr, t2)
+		if sc2 < bscore { //&& OrderPreserve(stots, t2) {
+			fmt.Printf(".")
+			tomb = t2
+			bscore = sc2
+		}
+	}
 	PrintResult("Tombola", tomb)
+	fmt.Println("SCORE: ", bscore)
 }
 
 func PrintResult(title string, seats map[string]int) {
@@ -60,7 +74,7 @@ func SumTotals(cc []Constit) map[string]int {
 func Tombola(cc []Constit) map[string]int {
 	res := make(map[string]int)
 	for _, v := range cc {
-		balls := v.GetBalls(3, 100)
+		balls := v.GetBalls(0, 100)
 		winner := SelectBall(balls)
 		res[winner]++
 	}

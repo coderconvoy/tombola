@@ -60,7 +60,6 @@ func SelectBall(mp map[string]int) string {
 	}
 	n := rand.Intn(len(ar))
 	return ar[n]
-
 }
 
 func (c Constit) FptpWinner() (string, int) {
